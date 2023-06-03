@@ -39,6 +39,15 @@ app.post('/task', async (req, res) => {
     }
 });
 
+app.get('/tasks', async (req, res) => {
+    try {
+        const users = await Task.find({});
+        res.send(users);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
 app.listen(port, () => {
     console.log('App is connected to port', port);
 });
