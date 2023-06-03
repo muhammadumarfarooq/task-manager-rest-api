@@ -19,6 +19,16 @@ app.post('/user', async (req, res) => {
     }
 });
 
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.send(users);
+    } catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+});
+
 app.post('/task', async (req, res) => {
     try {
         const task = new Task(req.body);
