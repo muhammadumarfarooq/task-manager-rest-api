@@ -15,3 +15,13 @@ app.use(taskRouter);
 app.listen(port, () => {
     console.log('App is connected to port', port);
 });
+
+
+//Tasks
+
+
+// add unique property to schema. (for uniqueness we need to wipe our db).
+// define our own method findByCredentials like findById.
+// Generate JWT token.
+
+
