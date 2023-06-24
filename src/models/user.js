@@ -40,8 +40,13 @@ const userSchema = new mongoose.Schema({
                 throw new Error('Please enter a valid age');
             }
         }
-
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true,
+        }
+    }]
 });
 
 userSchema.pre('save', async function (next) {
@@ -58,7 +63,12 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
 
-    return jwt.sign({_id: user._id.toString()}, 'thisismysecretkey');
+    const token = jwt.sign({_id: user._id.toString()}, 'thisismysecretkey');
+
+    user.tokens = user.tokens.concat({token});
+    await user.save();
+
+    return token;
 }
 
 userSchema.statics.findByCredentials = async (email, password) => {
