@@ -82,7 +82,16 @@ router.post('/user/login', async (req, res) => {
         const token = await user.generateAuthToken();
         res.send({user, token});
     } catch (e) {
-        console.log(e);
+        res.status(400).send(e);
+    }
+});
+
+router.post('/user/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter(tokenObj => tokenObj.token !== req.token);
+        await req.user.save();
+        res.send("Logout successful");
+    } catch (e) {
         res.status(400).send(e);
     }
 });
