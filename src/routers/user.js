@@ -76,7 +76,7 @@ router.delete('/users/:id', async (req, res) => {
     }
 });
 
-router.post('/user/login', async (req, res) => {
+router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
@@ -86,14 +86,16 @@ router.post('/user/login', async (req, res) => {
     }
 });
 
-router.post('/user/logout', auth, async (req, res) => {
+router.post('/users/logoutAll', auth, async (req, res) => {
     try {
-        req.user.tokens = req.user.tokens.filter(tokenObj => tokenObj.token !== req.token);
+        req.user.tokens = [];
         await req.user.save();
-        res.send("Logout successful");
+        res.send("you are logged out from all devices");
     } catch (e) {
         res.status(400).send(e);
     }
 });
+
+router.post('/user/logu');
 
 module.exports = router;
