@@ -87,6 +87,17 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 };
 
+userSchema.methods.getPublicProfile = function() {
+    const user = this;
+
+    const userObj = user.toObject();
+
+    delete userObj.tokens;
+    delete userObj.password;
+
+    return userObj;
+}
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
