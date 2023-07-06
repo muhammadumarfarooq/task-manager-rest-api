@@ -82,6 +82,14 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 });
 
-router.post('/user/logu');
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter(tokenObj => tokenObj.token !== req.token);
+        await req.user.save();
+        res.send("Logout successful");
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
 
 module.exports = router;
