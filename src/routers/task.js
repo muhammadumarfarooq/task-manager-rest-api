@@ -25,6 +25,7 @@ router.get('/tasks', async (req, res) => {
 router.get('/tasks/:id', async (req, res) => {
     try {
         const task = await Task.findById(req.params.id);
+        await task.populate('owner');
 
         if (!task) {
             return res.status(404).send();
