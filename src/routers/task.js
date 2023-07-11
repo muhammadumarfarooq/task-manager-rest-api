@@ -37,13 +37,17 @@ router.get('/tasks/:id', async (req, res) => {
     }
 });
 
-router.patch('/tasks/:id', async (req, res) => {
+router.patch('/tasks/:id', auth, async (req, res) => {
     try {
-        const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+        const task = await Task.findOne({_id: req.params.id, owner: req.user.id});
 
         if (!task) {
             return res.status(404).send('Not found!');
         }
+
+        const updates = Object.keys(req.body);
+        updates.forEach(updateKey => task[updateKey] = req.body[updateKey]);
+        await task.save();
 
         res.send(task);
 
